@@ -1,0 +1,27 @@
+{
+  "name": "grace",
+  "owner": {
+    "name": "Beyond The Brackets",
+    "url": "https://agent-grace.com"
+  },
+  "description": "Grace — the senior developer looking over your AI assistant's shoulder.",
+  "plugins": [
+    {
+      "name": "grace-guardian",
+      "source": "./plugins/grace-guardian",
+      "description": "Grace pushes back on the request before any work starts, reads the plan, reads each file as it is written, and asks for a review before you commit.",
+      "displayName": "Grace Guardian",
+      "homepage": "https://app.agent-grace.com/editor",
+      "repository": "https://github.com/Beyond-The-Brackets/grace-guardian",
+      "license": "MIT",
+      "keywords": [
+        "code-review",
+        "security",
+        "guardian",
+        "grace",
+        "mcp"
+      ],
+      "category": "development"
+    }
+  ]
+}

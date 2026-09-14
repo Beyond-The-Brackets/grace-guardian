@@ -1,0 +1,271 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/canary.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_prompt",
+            "input": {
+              "prompt": "${prompt}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}"
+            },
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_plan",
+            "input": {
+              "plan": "${tool_input.plan}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}"
+            },
+            "timeout": 8,
+            "statusMessage": "Grace is reading this plan"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/require-guard.sh",
+            "timeout": 6,
+            "statusMessage": "Grace: verifying the guardian is actually on"
+          },
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_write",
+            "input": {
+              "tool_name": "Edit",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.new_string}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}"
+            },
+            "timeout": 5,
+            "statusMessage": "Grace is checking this edit"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/require-guard.sh",
+            "timeout": 6,
+            "statusMessage": "Grace: verifying the guardian is actually on"
+          },
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_write",
+            "input": {
+              "tool_name": "Write",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.content}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}"
+            },
+            "timeout": 5,
+            "statusMessage": "Grace is checking this file"
+          }
+        ]
+      },
+      {
+        "matcher": "MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/require-guard.sh",
+            "timeout": 6,
+            "statusMessage": "Grace: verifying the guardian is actually on"
+          },
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_write",
+            "input": {
+              "tool_name": "MultiEdit",
+              "file_path": "${tool_input.file_path}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}"
+            },
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/require-guard.sh",
+            "timeout": 6,
+            "statusMessage": "Grace: verifying the guardian is actually on"
+          },
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_write",
+            "input": {
+              "tool_name": "NotebookEdit",
+              "file_path": "${tool_input.notebook_path}",
+              "text": "${tool_input.new_source}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}"
+            },
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_command",
+            "input": {
+              "command": "${tool_input.command}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}"
+            },
+            "timeout": 5,
+            "statusMessage": "Grace is reading this command"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_after_write",
+            "input": {
+              "tool_name": "Edit",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.new_string}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}"
+            },
+            "timeout": 6,
+            "statusMessage": "Grace is reading what was just written"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_after_write",
+            "input": {
+              "tool_name": "Write",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.content}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}"
+            },
+            "timeout": 6,
+            "statusMessage": "Grace is reading what was just written"
+          }
+        ]
+      },
+      {
+        "matcher": "MultiEdit",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_after_write",
+            "input": {
+              "tool_name": "MultiEdit",
+              "file_path": "${tool_input.file_path}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}"
+            },
+            "timeout": 6,
+            "statusMessage": "Grace is reading what was just written"
+          }
+        ]
+      },
+      {
+        "matcher": "NotebookEdit",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_after_write",
+            "input": {
+              "tool_name": "NotebookEdit",
+              "file_path": "${tool_input.notebook_path}",
+              "text": "${tool_input.new_source}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}"
+            },
+            "timeout": 6,
+            "statusMessage": "Grace is reading what was just written"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_stop",
+            "input": {
+              "stop_hook_active": "${stop_hook_active}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}"
+            },
+            "timeout": 10,
+            "statusMessage": "Grace is checking what changed this turn"
+          },
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/verify-guard.sh",
+            "timeout": 6
+          }
+        ]
+      }
+    ]
+  }
+}

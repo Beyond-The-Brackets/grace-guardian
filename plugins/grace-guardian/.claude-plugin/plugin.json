@@ -1,0 +1,17 @@
+{
+  "name": "grace-guardian",
+  "displayName": "Grace Guardian",
+  "version": "0.3.0",
+  "description": "Grace, the senior developer looking over your assistant's shoulder: it speaks only when it knows something about your project the assistant cannot see in the file — decisions, incidents, open findings, what depends on what — reads plans and files as they land, answers whether you are ready for production, and asks for a review before you commit.",
+  "author": {
+    "name": "Beyond The Brackets",
+    "url": "https://agent-grace.com"
+  },
+  "homepage": "https://app.agent-grace.com/editor",
+  "keywords": [
+    "code-review",
+    "security",
+    "guardian",
+    "grace"
+  ]
+}
