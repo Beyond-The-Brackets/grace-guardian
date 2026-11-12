@@ -1,0 +1,19 @@
+{
+  "name": "grace-guardian",
+  "displayName": "Grace Guardian",
+  "version": "0.11.0",
+  "description": "Grace Guardian watches the code your AI agent writes. It speaks only when it knows something about your project the assistant cannot see in the file — decisions, incidents, open findings, what depends on what — flags a credential before it is written, reads plans and files as they land, and asks for a review before you commit. It never approves a tool call: it can only refuse one or ask you.",
+  "author": {
+    "name": "Beyond The Brackets",
+    "url": "https://agent-grace.com"
+  },
+  "homepage": "https://app.agent-grace.com/editor",
+  "privacyPolicyUrl": "https://www.agent-grace.com/privacy",
+  "icon": ".claude-plugin/icon.png",
+  "keywords": [
+    "code-review",
+    "security",
+    "guardian",
+    "grace"
+  ]
+}
