@@ -1,0 +1,201 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_prompt",
+            "input": {
+              "prompt": "${prompt}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "share": "full"
+            },
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_plan",
+            "input": {
+              "plan": "${tool_input.plan}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}",
+              "share": "full"
+            },
+            "timeout": 8,
+            "statusMessage": "Grace is reading this plan"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_write",
+            "input": {
+              "tool_name": "Edit",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.new_string}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}",
+              "share": "full"
+            },
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_write",
+            "input": {
+              "tool_name": "Write",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.content}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}",
+              "share": "full"
+            },
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "MultiEdit",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_write",
+            "input": {
+              "tool_name": "MultiEdit",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.edits}",
+              "share": "full",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}"
+            },
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "NotebookEdit",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_write",
+            "input": {
+              "tool_name": "NotebookEdit",
+              "file_path": "${tool_input.notebook_path}",
+              "text": "${tool_input.new_source}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "permission_mode": "${permission_mode}",
+              "share": "full"
+            },
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_after_write",
+            "input": {
+              "tool_name": "Edit",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.new_string}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "share": "full"
+            },
+            "timeout": 6
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_after_write",
+            "input": {
+              "tool_name": "Write",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.content}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "share": "full"
+            },
+            "timeout": 6
+          }
+        ]
+      },
+      {
+        "matcher": "MultiEdit",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_after_write",
+            "input": {
+              "tool_name": "MultiEdit",
+              "file_path": "${tool_input.file_path}",
+              "text": "${tool_input.edits}",
+              "share": "full",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}"
+            },
+            "timeout": 6
+          }
+        ]
+      },
+      {
+        "matcher": "NotebookEdit",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:grace-guardian:grace",
+            "tool": "grace_guard_after_write",
+            "input": {
+              "tool_name": "NotebookEdit",
+              "file_path": "${tool_input.notebook_path}",
+              "text": "${tool_input.new_source}",
+              "cwd": "${cwd}",
+              "session_id": "${session_id}",
+              "share": "full"
+            },
+            "timeout": 6
+          }
+        ]
+      }
+    ]
+  }
+}
